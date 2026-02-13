@@ -1,35 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-
-/**
- * Removes a leading prefix that starts with "[CM]" and ends at the first ":" (inclusive).
- *
- * Examples:
- *  - "[CM]-49429:16. #61741: Add Thermal Throttling Support" -> "16. #61741: Add Thermal Throttling Support"
- *  - "   [CM]XYZ: hello" -> "hello"
- *  - "NoPrefix: hello" -> "NoPrefix: hello" (unchanged)
- *
- * This is intended to be applied anywhere we output a Test Case name/title
- * (UI preview, Excel/export rows, etc).
- */
-function stripCmPrefix(title) {
-  if (title == null) return "";
-
-  const s = String(title);
-
-  // Only strip if the first non-whitespace characters begin with "[CM]"
-  const trimmedLeft = s.replace(/^\s+/, "");
-  if (!trimmedLeft.startsWith("[CM]")) return s;
-
-  // Remove from the "[CM]" start up to and including the first ":".
-  // If there's no ":" after [CM], do not modify (avoid unexpected truncation).
-  const firstColonIdx = trimmedLeft.indexOf(":");
-  if (firstColonIdx === -1) return s;
-
-  const withoutPrefix = trimmedLeft.slice(firstColonIdx + 1).replace(/^\s+/, "");
-  return withoutPrefix;
-}
+import { stripCmPrefix } from "./utils/testCaseTitle";
 
 // PUBLIC_INTERFACE
 function App() {
